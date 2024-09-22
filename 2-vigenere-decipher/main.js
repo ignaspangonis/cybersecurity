@@ -34,9 +34,10 @@ function kasiskiTest(lowerCaseText) {
   const possibleKeyLengths = {}
 
   for (let distance in distances) {
-    distance = parseInt(distance)
+    const distanceNumber = Number(distance)
+
     for (let keyLength = MIN_KEY_LENGTH; keyLength <= MAX_KEY_LENGTH; keyLength++) {
-      if (distance % keyLength === 0) {
+      if (distanceNumber % keyLength === 0) {
         if (!possibleKeyLengths[keyLength]) {
           possibleKeyLengths[keyLength] = 0
         }
