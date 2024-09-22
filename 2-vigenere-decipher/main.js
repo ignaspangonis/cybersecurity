@@ -1,15 +1,15 @@
 const ALPHABET = 'aąbcčdeęėfghiįyjklmnoprsštuųūvzž'
 
 function kasiskiTest(lowerCaseText) {
+  const SEQUENCE_LENGTH = 2
   const MIN_KEY_LENGTH = 3
   const MAX_KEY_LENGTH = 15
-  const SEQUENCE_LENGTH = 2
   const distances = {}
 
   const sequencePositions = {}
 
   for (let i = 0; i < lowerCaseText.length - SEQUENCE_LENGTH + 1; i++) {
-    const sequence = lowerCaseText.substr(i, SEQUENCE_LENGTH)
+    const sequence = lowerCaseText.substring(i, i + SEQUENCE_LENGTH)
 
     if (!sequencePositions[sequence]) {
       sequencePositions[sequence] = []
@@ -17,23 +17,21 @@ function kasiskiTest(lowerCaseText) {
     sequencePositions[sequence].push(i)
   }
 
-  for (let sequence in sequencePositions) {
-    const positions = sequencePositions[sequence]
+  Object.values(sequencePositions).map(positions => {
+    if (positions.length <= 1) return
 
-    if (positions.length > 1) {
-      for (let i = 1; i < positions.length; i++) {
-        const distance = positions[i] - positions[i - 1]
+    for (let i = 1; i < positions.length; i++) {
+      const distance = positions[i] - positions[i - 1]
 
-        if (!distances[distance]) distances[distance] = 0
+      if (!distances[distance]) distances[distance] = 0
 
-        distances[distance]++
-      }
+      distances[distance]++
     }
-  }
+  })
 
   const possibleKeyLengths = {}
 
-  for (let distance in distances) {
+  Object.keys(distances).forEach(distance => {
     const distanceNumber = Number(distance)
 
     for (let keyLength = MIN_KEY_LENGTH; keyLength <= MAX_KEY_LENGTH; keyLength++) {
@@ -44,7 +42,7 @@ function kasiskiTest(lowerCaseText) {
         possibleKeyLengths[keyLength] += distances[distance]
       }
     }
-  }
+  })
 
   const sortedKeyLengths = Object.keys(possibleKeyLengths).sort(
     (a, b) => possibleKeyLengths[b] - possibleKeyLengths[a],
@@ -58,31 +56,28 @@ function getDecryptedCharIndex(charIndex, shift) {
 }
 
 function decryptVigenere(ciphertext, key) {
-  let decryptedText = ''
   let keyIndex = 0
 
-  for (let i = 0; i < ciphertext.length; i++) {
-    const cipherChar = ciphertext.charAt(i)
-    const lowerCaseChar = cipherChar.toLowerCase()
-    const isLowerCase = cipherChar === lowerCaseChar
+  return ciphertext
+    .split('')
+    .map(cipherChar => {
+      const lowerCaseChar = cipherChar.toLowerCase()
 
-    if (ALPHABET.includes(lowerCaseChar)) {
+      if (!ALPHABET.includes(lowerCaseChar)) return cipherChar
+
       const keyChar = key.charAt(keyIndex).toLowerCase()
       const charIndex = ALPHABET.indexOf(lowerCaseChar)
       const shift = ALPHABET.indexOf(keyChar)
 
       const decryptedCharIndex = getDecryptedCharIndex(charIndex, shift)
       const decryptedChar = ALPHABET[decryptedCharIndex]
+      const isLowerCase = cipherChar === lowerCaseChar
       const adjustedChar = isLowerCase ? decryptedChar : decryptedChar.toUpperCase()
-      decryptedText += adjustedChar
-
       keyIndex = (keyIndex + 1) % key.length
-    } else {
-      decryptedText += cipherChar
-    }
-  }
 
-  return decryptedText
+      return adjustedChar
+    })
+    .join('')
 }
 
 function calculateFrequencies(lowerCaseText) {
