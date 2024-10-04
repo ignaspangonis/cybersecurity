@@ -201,7 +201,6 @@ bšūuafi yk dgįmvkšščs, sb yk icktįsūfčjhzcį, ie yaąvv žši sąyruuį
 const KEY_MULTIPLIER = 2 // When the key length is 14, Kasiski test may give 7. Multiplier fixes it.
 
 const result = guessKeyAndDecrypt(CIPHER_TEXT, KEY_MULTIPLIER)
-const filtered = filterByAlphabet(result.decryptedText)
 
 console.log('Guessed Key:', result.key)
 console.log('Decrypted Text:', result.decryptedText)
