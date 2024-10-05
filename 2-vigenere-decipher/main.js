@@ -4,7 +4,6 @@ function kasiskiTest(lowerCaseText) {
   const SEQUENCE_LENGTH = 2
   const MIN_KEY_LENGTH = 3
   const MAX_KEY_LENGTH = 15
-  const distances = {}
 
   const sequencePositions = {}
 
@@ -16,6 +15,8 @@ function kasiskiTest(lowerCaseText) {
     }
     sequencePositions[sequence].push(i)
   }
+
+  const distances = {}
 
   Object.values(sequencePositions).map(positions => {
     if (positions.length <= 1) return
@@ -44,11 +45,11 @@ function kasiskiTest(lowerCaseText) {
     }
   })
 
-  const sortedKeyLengths = Object.keys(possibleKeyLengths).sort(
+  const mostProbableKeyLength = Object.keys(possibleKeyLengths).sort(
     (a, b) => possibleKeyLengths[b] - possibleKeyLengths[a],
-  )
+  )[0]
 
-  return Number(sortedKeyLengths[0])
+  return Number(mostProbableKeyLength)
 }
 
 function getDecryptedCharIndex(charIndex, shift) {
