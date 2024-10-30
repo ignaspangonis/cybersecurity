@@ -7,7 +7,12 @@ I am using `tsm` to run TypeScript files, e. g.:
 tsm main.ts
 ```
 
-And `node` for JavaScript files:
+`node` for JavaScript files:
 ```
 node main.js
+```
+
+`pyp3` for Python files:
+```
+pyp3 main.py
 ```
