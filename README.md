@@ -12,7 +12,7 @@ tsm main.ts
 node main.js
 ```
 
-`pyp3` for Python files:
+`python` for Python files:
 ```
-pyp3 main.py
+python main.py
 ```
