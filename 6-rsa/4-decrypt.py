@@ -3,7 +3,6 @@ from sympy.ntheory import primerange, factorint
 from Crypto.Util.number import inverse
 
 def find_small_prime_factor(n, bit_limit):
-    # Adjusted to use factorint for more advanced factorization
     factorization = factorint(n)
     for factor, _ in factorization.items():
         if factor.bit_length() <= bit_limit:
