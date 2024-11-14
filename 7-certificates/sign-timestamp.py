@@ -1,6 +1,5 @@
 import time
 from Crypto.PublicKey import RSA
-from Crypto.Signature import pkcs1_15
 from Crypto.Hash import SHA256
 
 # Provided RSA key components
@@ -15,7 +14,7 @@ with open("sertifikatas.txt", "rb") as f:
 
 cert_hash = SHA256.new(certificate_data).digest()
 
-ts10 = int(time.time()) # e.g. 1731160588
+ts10 = int(time.time()) # For example, 1731160588
 print("Timestamp (ts10):", ts10)
 
 ts16 = ts10.to_bytes(16, byteorder='big')
@@ -25,7 +24,7 @@ combined_fingerprint = SHA256.new(combined_data).digest()
 
 print("Certificate and timestamp fingerprint (SHA-256):", combined_fingerprint.hex())
 
-signature = pkcs1_15.new(rsa_key).sign(SHA256.new(combined_fingerprint))
-signature_decimal = int.from_bytes(signature, byteorder="big")
+combined_fingerprint_integer = int.from_bytes(combined_fingerprint, byteorder="big")
+signature_integer = pow(combined_fingerprint_integer, d, n)
 
-print("Certificate and timestamp fingerprint signature (decimal):", signature_decimal)
+print("Certificate and timestamp fingerprint signature (decimal):", signature_integer)
