@@ -12,15 +12,15 @@ rsa_key = RSA.construct((n, e, d))
 with open("sertifikatas.txt", "rb") as f:
     certificate_data = f.read()
 
-cert_hash = SHA256.new(certificate_data).digest()
+cert_hash = SHA256.new(certificate_data).digest().hex()
 
-ts10 = int(time.time()) # For example, 1731160588
+ts10 = int(time.time()) # For example, 1732392922
 print("Timestamp (ts10):", ts10)
 
-ts16 = ts10.to_bytes(16, byteorder='big')
+ts_hex = f"{ts10:x}"
 
-combined_data = cert_hash + ts16
-combined_fingerprint = SHA256.new(combined_data).digest()
+combined_data = cert_hash + ts_hex
+combined_fingerprint = SHA256.new(bytes.fromhex(combined_data)).digest()
 
 print("Certificate and timestamp fingerprint (SHA-256):", combined_fingerprint.hex())
 
